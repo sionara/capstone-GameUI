@@ -1,21 +1,30 @@
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
+import useLogin from '../../hooks/useLogin';
 
-export function Login() {
+export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
   // to use the navigate method of react-router-dom
   const navigate = useNavigate();
-  
+  const {isSaved, authenticateUser} = useLogin();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     console.log('======== ', e);
     console.log("email:", email, "Password:", password);
-    // navigate('/register');
+    
+    authenticateUser();
   }
+  useEffect(() => {
+    if (isSaved) {
+      navigate('/dashboard');
+    }
+  })
 
   return (
     <>

@@ -1,17 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
+import UseRegister from '../../hooks/useRegister';
 
-export function Register() {
+export const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
-  function handleSubmit() {
+  //for useRegister
+  const {isSaved, register} = UseRegister();
+
+  // for routing to api
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     console.log(name, email, password, confirmPassword);
+    register();
   }
+  
+  // navigate to dashboard if isSaved status changes
+  useEffect(() => {
+    if(isSaved){
+      navigate('/dashboard');
+    }
+  }, [isSaved]);
+
   return(
     <>
       <h1>REGISTER</h1>
@@ -22,7 +40,6 @@ export function Register() {
                 required
                 id="outlined-required"
                 label="name"
-                defaultValue="email@email.com"
                 value = {name}
                 onChange={(e) => setName(e.target.value) }
               />
@@ -32,7 +49,6 @@ export function Register() {
                 required
                 id="outlined-required"
                 label="Email"
-                defaultValue="email@email.com"
                 value = {email}
                 onChange={(e) => setEmail(e.target.value) }
               />
@@ -42,7 +58,6 @@ export function Register() {
                 required
                 id="outlined-required"
                 label="Password"
-                defaultValue="email@email.com"
                 value = {password}
                 onChange={(e) => setPassword(e.target.value) }
               />
@@ -51,8 +66,7 @@ export function Register() {
               <TextField
                 required
                 id="outlined-required"
-                label="Confirm Password"
-                defaultValue="email@email.com"
+                label="Confirm Password" 
                 value = {confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value) }
               />

@@ -1,8 +1,9 @@
-import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { Login } from "./login";
-import { Register } from './register';
-
+import { Login } from "./components/Login";
+import { Register } from './components/Register';
+import { Dashboard } from './components/Dashboard';
+import { Profile } from './components/Profile';
+import { History } from './components/History';
 import './App.css'
 
 //ROUTING
@@ -14,7 +15,19 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />
-  }
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />
+  },
+  {
+    path: '/dashboard/profile',
+    element: <Profile />
+  },
+  {
+    path: '/dashboard/history',
+    element: <History />
+  },
 ]);
 
 function App() {
