@@ -4,6 +4,7 @@ import { Register } from './components/Register';
 import { Dashboard } from './components/Dashboard';
 import { Profile } from './components/Profile';
 import { History } from './components/History';
+import { Game } from './components/Game';
 import './App.css'
 
 //ROUTING
