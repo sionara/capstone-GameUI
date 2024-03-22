@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const UseRegister = () => {
+interface RegisterProps {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+const useRegister = () => {
   const [isSaved, setIsSaved] = useState(false);
   
-  const register = () => {
+  const register = ({name, email, password, confirmPassword }: RegisterProps) => {
     // this could be path to my database, or external API etc
-    const url = "https://jsonplaceholder.typicode.com/todos"; //dummy api
+    console.log(JSON.stringify({name, email, password, confirmPassword}));
 
+    const url = "http://localhost:4000/register";
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({name, email, password, confirmPassword}) 
+    }
     try {
       // async call
-      fetch(url)
+      fetch(url, requestOptions)
         .then(response => response.json())
         .then(data => {
           console.log(data);
@@ -23,4 +36,4 @@ const UseRegister = () => {
   return { isSaved, register }
 }
 
-export default UseRegister;
+export default useRegister;

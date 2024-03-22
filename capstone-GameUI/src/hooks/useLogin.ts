@@ -1,20 +1,30 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-const UseLogin = () => {
+interface RegisterProps {
+  email: string;
+  password: string;
+}
+
+const useLogin = () => {
   const [isSaved, setIsSaved] = useState(false);
   
-  const authenticateUser = () => {
+  const authenticateUser = ({email, password}:RegisterProps) => {
     // this could be path to my database, or external API etc
-    const url = "https://jsonplaceholder.typicode.com/todos"; //dummy api
-
+    const url = "http://localhost:4000/login";
+    const requestOptions = {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email, password}) 
+    }
     try {
       // async call
-      fetch(url)
+      fetch(url, requestOptions)
         .then(response => response.json())
         .then(data => {
           console.log(data);
           setIsSaved(true);
         });
+      setIsSaved(true);
     } catch(err) {
       console.log(err);
     }
@@ -23,4 +33,4 @@ const UseLogin = () => {
   return { isSaved, authenticateUser }
 }
 
-export default UseLogin;
+export default useLogin;

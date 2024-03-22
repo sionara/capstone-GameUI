@@ -1,49 +1,38 @@
 import React from "react";
 import ResponsiveAppBar from "./nav";
 import Button from "@mui/material/Button";
-import * as io from "socket.io-client"
-
-
-const socket = io.connect("http://localhost:3001");
+import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
-  
-  function createGameRoom() {
-    
-    // emits event to create a room with id of room1
-    socket.emit("join_room", "room1")
-    // when another user joins, this should take us to game page.
+  const navigate = useNavigate();
+  function enterLobby() {
+    navigate("/lobby");
+  }
 
-  };
-  
+  function checkHistory() {
+    navigate("/dashboard/history");
+  }
+
+  function editProfile() {
+    navigate("/dashboard/profile");
+  }
+
   return (
     <>
       <header>
         <ResponsiveAppBar />
       </header>
       <h1>This is the dashboard</h1>
-      
-      <Button 
-      variant= "contained"
-      onClick={createGameRoom}> Play 1V1 Rock Paper Scissors! </Button>
-      <div>
-        more content
-      </div>
-      <div>
-        more content
-      </div>
-      <div>
-        more content
-      </div>
-      <div>
-        more content
-      </div>
-      <div>
-        more content
-      </div>
-      <div>
-        more content
-      </div>
+
+      <Button variant="contained" onClick={enterLobby}>
+        Enter Lobby
+      </Button>
+      <Button variant="contained" onClick={checkHistory}>
+        Check my history
+      </Button>
+      <Button variant="contained" onClick={editProfile}>
+        Edit my profile
+      </Button>
     </>
-  )
-}
+  );
+};
