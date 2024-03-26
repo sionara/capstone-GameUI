@@ -29,7 +29,7 @@ export const Register = () => {
   // navigate to dashboard if isSaved status changes
   useEffect(() => {
     if (isSaved) {
-      navigate("/dashboard");
+      navigate("/s/dashboard");
     }
   }, [isSaved]);
 

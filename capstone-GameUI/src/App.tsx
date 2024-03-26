@@ -7,6 +7,7 @@ import { History } from "./components/History";
 import { Game } from "./components/Game";
 import { Lobby } from "./components/Lobby/lobby";
 import "./App.css";
+import { SecuredRoute } from "./components/SecuredRoute/SecuredRoute";
 
 //ROUTING
 const router = createBrowserRouter([
@@ -19,9 +20,13 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: "/dashboard",
-    element: <Dashboard />,
+    path: "/s",
+    element: <SecuredRoute />,
     children: [
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
       {
         path: "profile",
         element: <Profile />,
@@ -30,23 +35,15 @@ const router = createBrowserRouter([
         path: "history",
         element: <History />,
       },
+      {
+        path: "lobby",
+        element: <Lobby />,
+      },
+      {
+        path: "game",
+        element: <Game />,
+      },
     ],
-  },
-  // {
-  //   path: '/dashboard/profile',
-  //   element: <Profile />
-  // },
-  // {
-  //   path: '/dashboard/history',
-  //   element: <History />
-  // },
-  {
-    path: "/lobby",
-    element: <Lobby />,
-  },
-  {
-    path: "/game",
-    element: <Game />,
   },
 ]);
 

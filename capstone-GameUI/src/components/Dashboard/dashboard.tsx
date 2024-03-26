@@ -1,7 +1,8 @@
 import React from "react";
 import ResponsiveAppBar from "./nav";
 import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useSessionStorage } from "usehooks-ts";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -10,12 +11,14 @@ export const Dashboard = () => {
   }
 
   function checkHistory() {
-    navigate("/dashboard/history");
+    navigate("/s/history");
   }
 
   function editProfile() {
-    navigate("/dashboard/profile");
+    navigate("/s/profile");
   }
+
+  const logOut = () => {};
 
   return (
     <>
@@ -33,6 +36,10 @@ export const Dashboard = () => {
       <Button variant="contained" onClick={editProfile}>
         Edit my profile
       </Button>
+      <Button variant="contained" onClick={logOut}>
+        LogOut
+      </Button>
+      <Outlet />
     </>
   );
 };

@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import { useLocalStorage } from "usehooks-ts";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,18 +20,25 @@ export const Login = () => {
   //session handler
   const [value, setValue] = useLocalStorage("session_id", false);
 
+  // checking to see if session value is true when user navigates to login
   function checkSession() {
     if (value) {
-      navigate("/dashboard");
+      navigate("/s/dashboard");
     }
   }
 
   useEffect(() => {
     if (isSaved) {
       setValue(true);
-      navigate("/dashboard");
+      navigate("/s/dashboard");
     }
   }, [isSaved]);
+
+  useEffect(() => {
+    if (value) {
+      setValue(false);
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     console.log("======== ", e);
@@ -42,6 +49,7 @@ export const Login = () => {
   return (
     <>
       {/* check session value exists in localstorage */}
+
       {checkSession()}
       <p
         ref={errRef}
