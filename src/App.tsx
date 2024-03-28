@@ -6,13 +6,18 @@ import { Profile } from "./components/Profile";
 import { History } from "./components/History";
 import { Game } from "./components/Game";
 import { Lobby } from "./components/Lobby/lobby";
-import "./App.css";
 import { SecuredRoute } from "./components/SecuredRoute/SecuredRoute";
+import { Landing } from "./components/Landing";
+import "./App.css";
 
 //ROUTING
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Landing />,
+  },
+  {
+    path: "/login",
     element: <Login />,
   },
   {
