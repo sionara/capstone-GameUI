@@ -17,28 +17,22 @@ export const Login = () => {
   const navigate = useNavigate();
   const { isSaved, authenticateUser } = useLogin();
 
-  //session handler
-  const [value, setValue] = useLocalStorage("session_id", false);
-
+  // using the useLocalStorage hook to set session in local storage
+  const [session, setSession] = useLocalStorage("session", false);
   // checking to see if session value is true when user navigates to login
-  function checkSession() {
-    if (value) {
-      navigate("/s/dashboard");
+
+  useEffect(() => {
+    if (session) {
+      setSession(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
     if (isSaved) {
-      setValue(true);
+      setSession(true);
       navigate("/s/dashboard");
     }
   }, [isSaved]);
-
-  useEffect(() => {
-    if (value) {
-      setValue(false);
-    }
-  }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     console.log("======== ", e);
@@ -48,9 +42,6 @@ export const Login = () => {
   };
   return (
     <>
-      {/* check session value exists in localstorage */}
-
-      {checkSession()}
       <p
         ref={errRef}
         className={errMsg ? "showMsg" : "hideMsg"}
