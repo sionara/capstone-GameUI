@@ -11,7 +11,7 @@ export const Login = () => {
   const [password, setPassword] = useState("");
 
   const errRef = useRef(null);
-  const [errMsg, setErrMsg] = useState();
+  const [errMsg] = useState();
 
   // to use the navigate method of react-router-dom
   const navigate = useNavigate();
