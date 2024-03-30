@@ -7,7 +7,7 @@ import { useSessionStorage } from "usehooks-ts";
 export const Dashboard = () => {
   const navigate = useNavigate();
   function enterLobby() {
-    navigate("/lobby");
+    navigate("/s/lobby");
   }
 
   function checkHistory() {

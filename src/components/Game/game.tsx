@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { Chat } from "../Chat/Chat";
 
 //game result message card
 const card = (
@@ -38,8 +39,7 @@ export function Game() {
   // state data passed from lobby page
   const [searchparams] = useSearchParams();
   console.log(searchparams.get("room"));
-  const [socket, setSocket] =
-    useState<io.Socket<DefaultEventsMap, DefaultEventsMap>>();
+  const [socket, setSocket] = useState<io.Socket<any, any>>();
   // const userId = socket.id;
   const [message, setMessage] = useState("");
 
@@ -129,6 +129,8 @@ export function Game() {
       >
         Return to Lobby
       </Button>
+
+      <Chat />
     </>
   );
 }

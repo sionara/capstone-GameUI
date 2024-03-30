@@ -35,7 +35,7 @@ export const Lobby = () => {
     // emits event to create a room with id of room1
     // socket!.emit("join_game", room);
     navigate({
-      pathname: "/game",
+      pathname: "/s/game",
       search: createSearchParams({
         room: room,
       }).toString(),
