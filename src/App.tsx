@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createHashRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { Dashboard } from "./components/Dashboard";
@@ -14,7 +14,7 @@ import "./App.css"; //global styling
 
 //ROUTING
 // TODO: try with React.Lazy()
-const router = createHashRouter(
+const router = createBrowserRouter(
   [
     {
       path: "/*",
