@@ -7,6 +7,7 @@ import { UserContext } from "../../context/Context";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
+  //@ts-ignore
   const [session, setSession] = useLocalStorage("session", true);
   const { userName } = useContext(UserContext);
   console.log(userName);

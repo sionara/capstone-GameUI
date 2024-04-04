@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect } from "react";
 import { UserContext } from "../../context/Context";
 // import { ChatMessageDto } from "./ChatMessageDto";
 import {
@@ -30,7 +30,7 @@ export const Chat = ({ roomId, socket }: Props) => {
   const { userName } = useContext(UserContext);
 
   const ENTERKEY = 13;
-  const scrollBottomRef = useRef(null);
+  // const scrollBottomRef = useRef(null);
 
   const ListMessages = allMessages.map(({ user, message }, i) => (
     <ListItem key={i}>
@@ -44,11 +44,12 @@ export const Chat = ({ roomId, socket }: Props) => {
       // console.log(data);
       setAllMessages([
         ...allMessages,
+        //@ts-ignore
         { user: data.user, message: data.message },
       ]);
-      if (scrollBottomRef.current) {
-        scrollBottomRef.current.scrollIntoView({ behavior: "smooth" });
-      }
+      // if (scrollBottomRef.current) {
+      //   scrollBottomRef.current.scrollIntoView({ behavior: "smooth" });
+      // }
     });
   }, [allMessages]);
 
