@@ -1,13 +1,18 @@
-import React from "react";
+import { useContext } from "react";
 import ResponsiveAppBar from "./nav";
 import Button from "@mui/material/Button";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useSessionStorage } from "usehooks-ts";
+import { useLocalStorage } from "usehooks-ts";
+import { UserContext } from "../../context/Context";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
+  const [session, setSession] = useLocalStorage("session", true);
+  const { userName } = useContext(UserContext);
+  console.log(userName);
+
   function enterLobby() {
-    navigate("/lobby");
+    navigate("/s/lobby");
   }
 
   function checkHistory() {
@@ -18,7 +23,10 @@ export const Dashboard = () => {
     navigate("/s/profile");
   }
 
-  const logOut = () => {};
+  const logOut = () => {
+    setSession(false);
+    navigate("/");
+  };
 
   return (
     <>

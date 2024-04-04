@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { Chat } from "../Chat/Chat";
 
 //game result message card
 const card = (
@@ -37,17 +38,18 @@ export function Game() {
 
   // state data passed from lobby page
   const [searchparams] = useSearchParams();
-  console.log(searchparams.get("room"));
-  const [socket, setSocket] =
-    useState<io.Socket<DefaultEventsMap, DefaultEventsMap>>();
-  // const userId = socket.id;
+
+  const roomId = searchparams.get("room");
+  // console.log(searchparams.get("room"));
+  const [socket, setSocket] = useState<io.Socket<any, any>>();
   const [message, setMessage] = useState("");
 
-  function handleClick(value: string) {
+  // sends user input to server
+  function handleClick(userChoice: string) {
     setIsClicked(true);
     socket!.emit("user_choice", {
-      roomId: searchparams.get("room"),
-      input: value,
+      roomId: roomId,
+      input: userChoice,
     });
   }
 
@@ -61,7 +63,7 @@ export function Game() {
   };
 
   useEffect(() => {
-    //use this to receive game results
+    //connect to server
     const _socket = io.connect("http://localhost:3001");
 
     setSocket(_socket);
@@ -73,9 +75,7 @@ export function Game() {
     });
 
     // join room
-    _socket.emit("join_room", searchparams.get("room"));
-    console.log("joined room: " + searchparams.get("room"));
-
+    _socket.emit("join_room", roomId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -129,6 +129,8 @@ export function Game() {
       >
         Return to Lobby
       </Button>
+
+      {socket && <Chat roomId={roomId} socket={socket} />}
     </>
   );
 }

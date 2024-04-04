@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 import { useLocalStorage } from "usehooks-ts";
+import { UserContext } from "../../context/Context";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -21,6 +22,8 @@ export const Login = () => {
   const [session, setSession] = useLocalStorage("session", false);
   // checking to see if session value is true when user navigates to login
 
+  const { setUserName } = useContext(UserContext);
+
   useEffect(() => {
     if (session) {
       setSession(false);
@@ -30,6 +33,7 @@ export const Login = () => {
   useEffect(() => {
     if (isSaved) {
       setSession(true);
+      setUserName("John");
       navigate("/s/dashboard");
     }
   }, [isSaved]);
@@ -38,6 +42,7 @@ export const Login = () => {
     console.log("======== ", e);
     console.log("email:", email, "Password:", password);
 
+    // if authentication is successful, isSaved will be set to true
     authenticateUser({ email, password });
   };
   return (
