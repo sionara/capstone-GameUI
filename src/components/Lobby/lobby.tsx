@@ -14,9 +14,6 @@ export const Lobby = () => {
   const [gameRooms, setgameRooms] = useState<string[]>([]);
   const [socket, setSocket] =
     useState<io.Socket<DefaultEventsMap, DefaultEventsMap>>();
-  // const [roomName, setRoomName] = useState('');
-
-  // const socket = useRef<io.Socket<DefaultEventsMap, DefaultEventsMap>>();
 
   const makeid = (length: number) => {
     let result = "";
@@ -97,7 +94,6 @@ export const Lobby = () => {
             Refresh List
           </Button>
         </Box>
-        {/* <input value={roomName} onChange={e => setRoomName(e.target.value)}> </input> */}
       </Container>
     </>
   );

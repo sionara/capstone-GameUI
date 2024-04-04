@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
@@ -8,6 +9,7 @@ import { Game } from "./components/Game";
 import { Lobby } from "./components/Lobby";
 import { SecuredRoute } from "./components/SecuredRoute";
 import { Landing } from "./components/Landing";
+import { UserContext } from "./context/Context.tsx";
 import "./App.css"; //global styling
 
 //ROUTING
@@ -54,9 +56,12 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const [userName, setUserName] = useState("John");
   return (
     <>
-      <RouterProvider router={router} />
+      <UserContext.Provider value={{ userName, setUserName }}>
+        <RouterProvider router={router} />
+      </UserContext.Provider>
     </>
   );
 }
