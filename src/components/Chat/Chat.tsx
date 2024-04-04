@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import { UserContext } from "../../context/Context";
-import { ChatMessageDto } from "./ChatMessageDto";
+// import { ChatMessageDto } from "./ChatMessageDto";
 import {
   Box,
   Container,
@@ -17,8 +17,14 @@ import {
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import "./Chat.css";
+import * as io from "socket.io-client";
 
-export const Chat = ({ roomId, socket }) => {
+interface Props {
+  roomId: string;
+  socket: io.Socket<any, any>;
+}
+
+export const Chat = ({ roomId, socket }: Props) => {
   const [allMessages, setAllMessages] = useState([]);
   const [message, setMessage] = useState("");
   const { userName } = useContext(UserContext);
@@ -26,15 +32,15 @@ export const Chat = ({ roomId, socket }) => {
   const ENTERKEY = 13;
   const scrollBottomRef = useRef(null);
 
-  const ListMessages = allMessages.map(({ user, message }) => (
-    <ListItem key={Date.now()}>
+  const ListMessages = allMessages.map(({ user, message }, i) => (
+    <ListItem key={i}>
       <ListItemText primary={`${user}: ${message}`} />
     </ListItem>
   ));
 
   //handles receiving message
   useEffect(() => {
-    socket.on("receive_message", (data) => {
+    socket.on("receive_message", (data: JSON) => {
       // console.log(data);
       setAllMessages([
         ...allMessages,
@@ -57,8 +63,9 @@ export const Chat = ({ roomId, socket }) => {
     }
   };
 
-  const handleEnterKey = (event) => {
+  const handleEnterKey = (event: { keyCode: number }) => {
     if (event.keyCode === ENTERKEY) {
+      console.log("pressed enter key");
       sendMessage();
     }
   };
