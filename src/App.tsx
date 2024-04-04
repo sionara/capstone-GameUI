@@ -17,7 +17,7 @@ import "./App.css"; //global styling
 const router = createBrowserRouter(
   [
     {
-      path: "/*",
+      path: "/",
       element: <Landing />,
     },
     {
