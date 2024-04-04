@@ -17,7 +17,7 @@ import "./App.css"; //global styling
 const router = createHashRouter(
   [
     {
-      path: "/",
+      path: "/*",
       element: <Landing />,
     },
     {
