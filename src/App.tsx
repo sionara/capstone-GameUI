@@ -55,7 +55,7 @@ const router = createBrowserRouter(
       ],
     },
   ],
-  { basename: "/capstone-GameUI" }
+  { basename: "/" }
 );
 
 function App() {
