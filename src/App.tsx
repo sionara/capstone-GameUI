@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { Dashboard } from "./components/Dashboard";
@@ -14,46 +14,49 @@ import "./App.css"; //global styling
 
 //ROUTING
 // TODO: try with React.Lazy()
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Landing />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/s",
-    element: <SecuredRoute />,
-    children: [
-      {
-        path: "dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "profile",
-        element: <Profile />,
-      },
-      {
-        path: "history",
-        element: <History />,
-      },
-      {
-        path: "lobby",
-        element: <Lobby />,
-      },
-      {
-        path: "game",
-        element: <Game />,
-      },
-    ],
-  },
-]);
+const router = createHashRouter(
+  [
+    {
+      path: "/",
+      element: <Landing />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
+    },
+    {
+      path: "/s",
+      element: <SecuredRoute />,
+      children: [
+        {
+          path: "dashboard",
+          element: <Dashboard />,
+        },
+        {
+          path: "profile",
+          element: <Profile />,
+        },
+        {
+          path: "history",
+          element: <History />,
+        },
+        {
+          path: "lobby",
+          element: <Lobby />,
+        },
+        {
+          path: "game",
+          element: <Game />,
+        },
+      ],
+    },
+  ],
+  { basename: "/capstone-GameUI" }
+);
 
 function App() {
   const [userName, setUserName] = useState("John");
