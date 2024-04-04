@@ -43,6 +43,7 @@ export const Chat = ({ roomId, socket }: Props) => {
     socket.on("receive_message", (data: JSON) => {
       // console.log(data);
       setAllMessages([
+        //@ts-ignore
         ...allMessages,
         //@ts-ignore
         { user: data.user, message: data.message },

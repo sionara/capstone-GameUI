@@ -129,7 +129,7 @@ export function Game() {
       >
         Return to Lobby
       </Button>
-
+      {/* @ts-ignore */}
       {socket && <Chat roomId={roomId} socket={socket} />}
     </>
   );
