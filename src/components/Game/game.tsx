@@ -64,7 +64,7 @@ export function Game() {
 
   useEffect(() => {
     //connect to server
-    const _socket = io.connect("http://localhost:3001");
+    const _socket = io.connect("https://capstone-gameserver.onrender.com");
 
     setSocket(_socket);
 

@@ -50,8 +50,8 @@ export const Lobby = () => {
   };
   // register functions to handle responses from server here
   useEffect(() => {
-    // socket.current = io.connect("http://localhost:3001");
-    const _socket = io.connect("http://localhost:3001");
+    // socket.current = io.connect("https://capstone-gameserver.onrender.com");
+    const _socket = io.connect("https://capstone-gameserver.onrender.com");
 
     setSocket(_socket);
 
