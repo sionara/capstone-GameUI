@@ -79,6 +79,14 @@ export const Register = () => {
           Register
         </Button>
       </form>
+      <Button
+        variant="contained"
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Go Back to Home
+      </Button>
     </>
   );
 };

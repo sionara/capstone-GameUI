@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import * as io from "socket.io-client";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
+import { Paper } from "@mui/material";
 
 export const Lobby = () => {
   //global variables should be inside function
@@ -50,8 +51,7 @@ export const Lobby = () => {
   };
   // register functions to handle responses from server here
   useEffect(() => {
-    // socket.current = io.connect("https://capstone-gameserver.onrender.com");
-    const _socket = io.connect("https://capstone-gameserver.onrender.com");
+    const _socket = io.connect(import.meta.env.VITE_GAMESERVER_URL);
 
     setSocket(_socket);
 
@@ -75,25 +75,34 @@ export const Lobby = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const returnToDash = () => {
+    navigate("/s/dashboard");
+  };
+
   return (
     <>
+      <Button variant="contained" onClick={returnToDash}>
+        Back to DashBoard
+      </Button>
       <Container>
-        <Box>
-          <List className="gameRooms">
-            {gameRooms.map((room) => (
-              <ListItem key={room}>
-                {room}
-                <Button onClick={() => joinRoom(room)}>Join Room</Button>
-              </ListItem>
-            ))}
-          </List>
-          <Button variant="contained" onClick={handleCreateRoom}>
-            Create Room
-          </Button>
-          <Button variant="contained" onClick={refreshList}>
-            Refresh List
-          </Button>
-        </Box>
+        <Paper elevation={4}>
+          <Box sx={{ border: 1 }}>
+            <List className="gameRooms">
+              {gameRooms.map((room) => (
+                <ListItem key={room}>
+                  {room}
+                  <Button onClick={() => joinRoom(room)}>Join Room</Button>
+                </ListItem>
+              ))}
+            </List>
+            <Button variant="contained" onClick={handleCreateRoom}>
+              Create Room
+            </Button>
+            <Button variant="contained" onClick={refreshList}>
+              Refresh List
+            </Button>
+          </Box>
+        </Paper>
       </Container>
     </>
   );

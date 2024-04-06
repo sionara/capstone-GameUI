@@ -86,7 +86,7 @@ export const Login = () => {
           Submit
         </Button>
       </Box>
-      <Button variant="contained" onClick={() => navigate("register")}>
+      <Button variant="contained" onClick={() => navigate("/register")}>
         Not Registered? Click here to register
       </Button>
     </>

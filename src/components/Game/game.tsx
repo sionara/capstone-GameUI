@@ -55,16 +55,16 @@ export function Game() {
 
   const restartGame = () => {
     setMessage("");
-    setIsClicked(false);
+    setIsClicked(!isClicked);
   };
 
   const returnToLobby = () => {
-    navigate("/lobby");
+    navigate("/s/lobby");
   };
 
   useEffect(() => {
     //connect to server
-    const _socket = io.connect("https://capstone-gameserver.onrender.com");
+    const _socket = io.connect(import.meta.env.VITE_GAMESERVER_URL);
 
     setSocket(_socket);
 

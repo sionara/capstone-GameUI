@@ -13,6 +13,7 @@ export const Landing = () => {
   };
   return (
     <>
+      {console.log(import.meta.env)}
       <h1>Online Rock-Paper Scissor</h1>
 
       <p>
