@@ -51,27 +51,37 @@ export const Lobby = () => {
   };
   // register functions to handle responses from server here
   useEffect(() => {
-    const _socket = io.connect(import.meta.env.VITE_GAMESERVER_URL);
+    // const sk = io.connect(import.meta.env.VITE_GAMESERVER_URL);
 
-    setSocket(_socket);
+    // used different variable to differenciate socket variable in this useEffect scope
+    let sk;
+
+    // checking environment to conditionally use different server URL
+    if (import.meta.env.DEV) {
+      sk = io.connect("http://localhost:3001");
+    } else {
+      sk = io.connect("https://capstone-gameserver.onrender.com");
+    }
+
+    setSocket(sk);
 
     console.log("Created connection");
 
     //when user creates room. rendered before initial get_rooms call.
-    _socket.on("send_rooms", (rooms: any) => {
+    sk.on("send_rooms", (rooms: any) => {
       setgameRooms(rooms);
       console.log("display rooms ran.");
       console.log(gameRooms);
     });
 
     // when user presses join room
-    _socket.on("display_game", () => {
+    sk.on("display_game", () => {
       // console.log("Redirected to Game page");
       // navigate('/game');
     });
 
     // first fetch when user enters lobby page. rendered after receiver (send_rooms)
-    _socket.emit("get_rooms");
+    sk.emit("get_rooms");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

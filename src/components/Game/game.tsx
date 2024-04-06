@@ -64,18 +64,28 @@ export function Game() {
 
   useEffect(() => {
     //connect to server
-    const _socket = io.connect(import.meta.env.VITE_GAMESERVER_URL);
+    // const sk = io.connect(import.meta.env.VITE_GAMESERVER_URL); --- used with .env and .env.production files enabled. tried another method for learning purposes
 
-    setSocket(_socket);
+    // used different variable to differenciate socket variable in this useEffect scope
+    let sk;
 
-    _socket.on("game_result", (gameResult) => {
+    // checking environment to conditionally use different server URL
+    if (import.meta.env.DEV) {
+      sk = io.connect("http://localhost:3001");
+    } else {
+      sk = io.connect("https://capstone-gameserver.onrender.com");
+    }
+
+    setSocket(sk);
+
+    sk.on("game_result", (gameResult) => {
       console.log(gameResult);
       setMessage(gameResult);
       setIsGameOver(true);
     });
 
     // join room
-    _socket.emit("join_room", roomId);
+    sk.emit("join_room", roomId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
