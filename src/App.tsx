@@ -59,7 +59,7 @@ const router = createBrowserRouter(
 );
 
 function App() {
-  const [userName, setUserName] = useState("John");
+  const [userName, setUserName] = useState("");
   return (
     <>
       <UserContext.Provider value={{ userName, setUserName }}>

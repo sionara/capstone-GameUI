@@ -1,40 +1,23 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as io from "socket.io-client"; // import all req for typescript
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import CardActions from "@mui/material/CardActions";
+
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Chat } from "../Chat/Chat";
-
-//game result message card
-const card = (
-  <React.Fragment>
-    <CardContent>
-      <Typography variant="h5" component="div">
-        {/* win or lose message */}
-        message
-      </Typography>
-      <Typography sx={{ mb: 1.5 }} color="text.secondary">
-        adjective
-      </Typography>
-      <Typography variant="body2">
-        well meaning and kindly.
-        <br />
-        {'"a benevolent smile"'}
-      </Typography>
-    </CardContent>
-    <CardActions>
-      <Button size="small">Learn More</Button>
-    </CardActions>
-  </React.Fragment>
-);
+import rock from "../../assets/rock.svg";
+import paper from "../../assets/paper.svg";
+import scissor from "../../assets/scissor.svg";
+import Box from "@mui/material/Box";
+import { useReadLocalStorage } from "usehooks-ts";
 
 export function Game() {
   const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const userName = useReadLocalStorage("username");
 
   // state data passed from lobby page
   const [searchparams] = useSearchParams();
@@ -49,13 +32,15 @@ export function Game() {
     setIsClicked(true);
     socket!.emit("user_choice", {
       roomId: roomId,
+      username: userName,
       input: userChoice,
     });
   }
 
   const restartGame = () => {
     setMessage("");
-    setIsClicked(!isClicked);
+    setIsClicked(false);
+    setIsGameOver(false);
   };
 
   const returnToLobby = () => {
@@ -70,10 +55,15 @@ export function Game() {
     let sk;
 
     // checking environment to conditionally use different server URL
-    if (import.meta.env.DEV) {
-      sk = io.connect("http://localhost:3001");
+    // if (import.meta.env.DEV) {
+    //   sk = io.connect("http://localhost:3001");
+    // } else {
+    //   sk = io.connect("https://capstone-gameserver.onrender.com");
+    // }
+    if (window.navigator.userAgent.includes("Android")) {
+      sk = io.connect("https://a0b1-67-71-196-232.ngrok-free.app");
     } else {
-      sk = io.connect("https://capstone-gameserver.onrender.com");
+      sk = io.connect("http://localhost:3001");
     }
 
     setSocket(sk);
@@ -91,56 +81,62 @@ export function Game() {
 
   return (
     <>
-      <Button
-        variant="contained"
-        onClick={() => handleClick("Rock")}
-        value="Rock"
-        disabled={isClicked}
-      >
-        Rock
-      </Button>
+      <Typography variant={"h6"} sx={{ mb: "1em" }}>
+        Click on one of the buttons below to declare your hand!
+      </Typography>
+      <Box sx={{ display: "flex", gap: "1em", justifyContent: "space-around" }}>
+        <Button
+          variant="contained"
+          onClick={() => handleClick("Rock")}
+          value="Rock"
+          disabled={isClicked}
+          startIcon={<img src={rock} width={"25em"}></img>}
+        >
+          Rock
+        </Button>
 
-      <Button
-        variant="contained"
-        onClick={() => handleClick("Paper")}
-        value="Paper"
-        disabled={isClicked}
-      >
-        Paper
-      </Button>
+        <Button
+          variant="contained"
+          onClick={() => handleClick("Paper")}
+          value="Paper"
+          disabled={isClicked}
+          startIcon={<img src={paper} width={"25em"}></img>}
+        >
+          Paper
+        </Button>
 
-      <Button
-        variant="contained"
-        onClick={() => handleClick("Scissor")}
-        value="Scissor"
-        disabled={isClicked}
-      >
-        Scissor
-      </Button>
+        <Button
+          variant="contained"
+          onClick={() => handleClick("Scissor")}
+          value="Scissor"
+          disabled={isClicked}
+          startIcon={<img src={scissor} width={"25em"}></img>}
+        >
+          Scissor
+        </Button>
+      </Box>
+      <Card sx={{ my: 4 }}>
+        <CardContent>
+          <Typography variant="h4">
+            Match Result: <strong>{message}</strong>
+          </Typography>
+        </CardContent>
+      </Card>
+      {isClicked && <p>Waiting for Other Player...</p>}
 
-      <Card variant="outlined"> {card} </Card>
+      {isGameOver && (
+        <Button variant="contained" onClick={restartGame}>
+          Replay
+        </Button>
+      )}
 
-      <p style={isClicked ? { display: "block" } : { display: "none" }}>
-        Waiting for Other Player...
-      </p>
-      <p>Result: {message}</p>
-
-      <Button
-        variant="contained"
-        onClick={restartGame}
-        style={isGameOver ? { display: "block" } : { display: "none" }}
-      >
-        Replay
-      </Button>
-      <Button
-        variant="contained"
-        onClick={returnToLobby}
-        style={isGameOver ? { display: "block" } : { display: "none" }}
-      >
-        Return to Lobby
-      </Button>
+      {isGameOver && (
+        <Button variant="contained" onClick={returnToLobby}>
+          Return to Lobby
+        </Button>
+      )}
       {/* @ts-ignore */}
-      {socket && <Chat roomId={roomId} socket={socket} />}
+      {socket && <Chat roomId={roomId} socket={socket} username={userName} />}
     </>
   );
 }

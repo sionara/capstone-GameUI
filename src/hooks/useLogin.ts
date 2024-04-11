@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { useLocalStorage } from "usehooks-ts";
 interface RegisterProps {
   email: string;
   password: string;
@@ -7,10 +7,16 @@ interface RegisterProps {
 
 const useLogin = () => {
   const [isSaved, setIsSaved] = useState(false);
+  const [username, setUserName] = useLocalStorage("username", "");
+  let url;
 
   const authenticateUser = ({ email, password }: RegisterProps) => {
     // this could be path to my database, or external API etc
-    const url = "http://localhost:4000/login";
+    if (window.navigator.userAgent.includes("Android")) {
+      url = "https://36cb-67-71-196-232.ngrok-free.app/login";
+    } else {
+      url = "http://localhost:4000/login";
+    }
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -24,8 +30,8 @@ const useLogin = () => {
         .then((data) => {
           console.log(data);
           setIsSaved(true);
+          setUserName(data.name);
         });
-      setIsSaved(true);
     } catch (err) {
       console.log(err);
     }

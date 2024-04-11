@@ -7,7 +7,18 @@ import { useEffect, useState } from "react";
 import * as io from "socket.io-client";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { Paper } from "@mui/material";
+import { IconButton, Paper, Typography } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
+import "./lobby.css";
+import LoginIcon from "@mui/icons-material/Login";
+import { yellow } from "@mui/material/colors";
+import { ThemeProvider } from "@emotion/react";
+
+const theme = createTheme({
+  palette: {
+    secondary: yellow,
+  },
+});
 
 export const Lobby = () => {
   //global variables should be inside function
@@ -57,10 +68,18 @@ export const Lobby = () => {
     let sk;
 
     // checking environment to conditionally use different server URL
-    if (import.meta.env.DEV) {
-      sk = io.connect("http://localhost:3001");
+    // if (import.meta.env.DEV) {
+    //   sk = io.connect("http://localhost:3001");
+    // } else {
+    //   sk = io.connect("https://capstone-gameserver.onrender.com");
+    // }
+
+    if (window.navigator.userAgent.includes("Android")) {
+      console.log("mobile");
+      sk = io.connect("https://a0b1-67-71-196-232.ngrok-free.app");
     } else {
-      sk = io.connect("https://capstone-gameserver.onrender.com");
+      console.log("desktop");
+      sk = io.connect("http://localhost:3001");
     }
 
     setSocket(sk);
@@ -91,29 +110,46 @@ export const Lobby = () => {
 
   return (
     <>
-      <Button variant="contained" onClick={returnToDash}>
-        Back to DashBoard
-      </Button>
-      <Container>
-        <Paper elevation={4}>
-          <Box sx={{ border: 1 }}>
-            <List className="gameRooms">
-              {gameRooms.map((room) => (
-                <ListItem key={room}>
-                  {room}
-                  <Button onClick={() => joinRoom(room)}>Join Room</Button>
-                </ListItem>
-              ))}
-            </List>
-            <Button variant="contained" onClick={handleCreateRoom}>
+      <ThemeProvider theme={theme}>
+        <Button variant="contained" onClick={returnToDash}>
+          Back to DashBoard
+        </Button>
+        <Container sx={{ width: "100vw" }}>
+          <Paper elevation={4}>
+            <Box id="rooms-window">
+              <List id="rooms-window-list">
+                {gameRooms.map((room) => (
+                  <ListItem sx={{ justifyContent: "center" }} key={room}>
+                    {room}
+                    <Button
+                      variant="contained"
+                      endIcon={<LoginIcon />}
+                      onClick={() => joinRoom(room)}
+                      size="small"
+                      sx={{ mx: "0.5em" }}
+                      color="secondary"
+                    >
+                      <Typography>Join</Typography>
+                    </Button>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </Paper>
+          <Box className="buttons-container">
+            <Button
+              sx={{ mt: "1em" }}
+              variant="contained"
+              onClick={handleCreateRoom}
+            >
               Create Room
             </Button>
             <Button variant="contained" onClick={refreshList}>
               Refresh List
             </Button>
           </Box>
-        </Paper>
-      </Container>
+        </Container>
+      </ThemeProvider>
     </>
   );
 };

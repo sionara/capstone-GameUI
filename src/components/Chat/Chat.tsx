@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect } from "react";
-import { UserContext } from "../../context/Context";
+import { useState, useEffect } from "react";
+
 // import { ChatMessageDto } from "./ChatMessageDto";
 import {
   Box,
@@ -22,13 +22,13 @@ import * as io from "socket.io-client";
 interface Props {
   roomId: string;
   socket: io.Socket<any, any>;
+  username: string;
 }
 
-export const Chat = ({ roomId, socket }: Props) => {
+export const Chat = ({ roomId, socket, username }: Props) => {
   const [allMessages, setAllMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const { userName } = useContext(UserContext);
-
+  const userName = username;
   const ENTERKEY = 13;
   // const scrollBottomRef = useRef(null);
 
@@ -83,8 +83,6 @@ export const Chat = ({ roomId, socket }: Props) => {
             <Grid id="chat-window" xs={12} item>
               <List id="chat-window-messages">{ListMessages}</List>
             </Grid>
-            <Grid item></Grid>
-            <Grid item></Grid>
             <Grid xs={9} item>
               <FormControl fullWidth>
                 <TextField

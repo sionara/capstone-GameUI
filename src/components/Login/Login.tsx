@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import { useEffect, useState, useRef } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import useLogin from "../../hooks/useLogin";
 import { useLocalStorage } from "usehooks-ts";
-import { UserContext } from "../../context/Context";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -22,8 +21,6 @@ export const Login = () => {
   const [session, setSession] = useLocalStorage("session", false);
   // checking to see if session value is true when user navigates to login
 
-  const { setUserName } = useContext(UserContext);
-
   useEffect(() => {
     if (session) {
       setSession(false);
@@ -32,18 +29,19 @@ export const Login = () => {
 
   useEffect(() => {
     if (isSaved) {
+      // setSession(true); this is used to bypass server authorization
       setSession(true);
-      setUserName("John");
       navigate("/s/dashboard");
     }
   }, [isSaved]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("======== ", e);
-    console.log("email:", email, "Password:", password);
-
+  const handleSubmit = () => {
     // if authentication is successful, isSaved will be set to true
-    authenticateUser({ email, password });
+    if (email === "" || password === "") {
+      alert("please enter your email and password");
+    } else {
+      authenticateUser({ email, password });
+    }
   };
   return (
     <>
@@ -56,13 +54,9 @@ export const Login = () => {
       </p>
       <h1>LOGIN</h1>
       <Box
-        component="form"
         sx={{
           "& .MuiTextField-root": { m: 1, width: "25ch" },
         }}
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit}
       >
         <div>
           <TextField
@@ -75,20 +69,23 @@ export const Login = () => {
         </div>
         <div>
           <TextField
-            required
+            required // need to make this required to prevent empty strings
             id="outlined-required"
             label="Password"
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <Button type="submit" variant="contained">
+      </Box>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+        <Button variant="contained" onClick={handleSubmit}>
           Submit
         </Button>
+        <Button variant="contained" onClick={() => navigate("/register")}>
+          Not Registered? Click here to register
+        </Button>
       </Box>
-      <Button variant="contained" onClick={() => navigate("/register")}>
-        Not Registered? Click here to register
-      </Button>
     </>
   );
 };

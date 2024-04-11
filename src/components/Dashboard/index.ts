@@ -1,2 +1,2 @@
-export * from './dashboard';
-export * from './nav';
+export * from "./Dashboard";
+export * from "./nav";
