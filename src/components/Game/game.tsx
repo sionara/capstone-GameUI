@@ -55,16 +55,16 @@ export function Game() {
     let sk;
 
     // checking environment to conditionally use different server URL
-    // if (import.meta.env.DEV) {
-    //   sk = io.connect("http://localhost:3001");
-    // } else {
-    //   sk = io.connect("https://capstone-gameserver.onrender.com");
-    // }
-    if (window.navigator.userAgent.includes("Android")) {
-      sk = io.connect("https://a0b1-67-71-196-232.ngrok-free.app");
-    } else {
+    if (import.meta.env.DEV) {
       sk = io.connect("http://localhost:3001");
+    } else {
+      sk = io.connect("https://capstone-gameserver.onrender.com");
     }
+    // if (window.navigator.userAgent.includes("Android")) {
+    //   sk = io.connect("https://a0b1-67-71-196-232.ngrok-free.app");
+    // } else {
+    //   sk = io.connect("http://localhost:3001");
+    // }
 
     setSocket(sk);
 

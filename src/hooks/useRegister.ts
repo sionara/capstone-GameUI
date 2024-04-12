@@ -8,7 +8,8 @@ interface RegisterProps {
 }
 
 const useRegister = () => {
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [username, setUserName] = useLocalStorage("username", "");
   let url;
 
@@ -19,10 +20,11 @@ const useRegister = () => {
     confirmPassword,
   }: RegisterProps) => {
     console.log(JSON.stringify({ name, email, password, confirmPassword }));
-    if (window.navigator.userAgent.includes("android")) {
-      url = "https://48fa-67-71-196-232.ngrok-free.app/register";
-    } else {
+    // if (window.navigator.userAgent.includes("Android"))
+    if (import.meta.env.DEV) {
       url = "http://localhost:4000/register";
+    } else {
+      url = "https://capstone-apiserver.onrender.com";
     }
 
     const requestOptions = {
@@ -36,15 +38,19 @@ const useRegister = () => {
         .then((response) => response.json())
         .then((data) => {
           // console.log(data);
-          setIsSaved(true);
-          setUserName(data.name);
+          if (data.msg === "success") {
+            setIsSuccess(true);
+            setUserName(data.name);
+          } else {
+            setErrorMsg(data.msg);
+          }
         });
     } catch (err) {
       console.log(err);
     }
   };
 
-  return { isSaved, register };
+  return { isSuccess, register, errorMsg };
 };
 
 export default useRegister;

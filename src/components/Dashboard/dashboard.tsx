@@ -1,9 +1,13 @@
 import IMAGES from "../../img/images";
 import "./dashboard.css";
+import { useReadLocalStorage } from "usehooks-ts";
 
 export const Dashboard = () => {
+  const username: string | null = useReadLocalStorage("username");
+
   return (
     <>
+      <h1>Welcome, {username}</h1>
       <div id="main-content">
         <img
           src={IMAGES.rockPaperScissor}

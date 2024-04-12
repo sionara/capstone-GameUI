@@ -4,14 +4,17 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import useRegister from "../../hooks/useRegister";
+import { useLocalStorage } from "usehooks-ts";
 
 export const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [session, setSession] = useLocalStorage("session", false);
+
   //for useRegister
-  const { isSaved, register } = useRegister();
+  const { isSuccess, register, errorMsg } = useRegister();
 
   // for routing to api
   const navigate = useNavigate();
@@ -31,10 +34,11 @@ export const Register = () => {
 
   // navigate to dashboard if isSaved status changes
   useEffect(() => {
-    if (isSaved) {
+    if (isSuccess) {
+      setSession(true);
       navigate("/s/dashboard");
     }
-  }, [isSaved]);
+  }, [isSuccess]);
 
   return (
     <>
@@ -82,12 +86,16 @@ export const Register = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
+
+        <p>{errorMsg}</p>
+
         <Button variant="contained" onClick={handleSubmit}>
           Register
         </Button>
       </Box>
 
       <Button
+        sx={{ mt: "1em" }}
         variant="contained"
         onClick={() => {
           navigate("/");

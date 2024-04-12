@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -10,12 +10,9 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const errRef = useRef(null);
-  const [errMsg] = useState();
-
   // to use the navigate method of react-router-dom
   const navigate = useNavigate();
-  const { isSaved, authenticateUser } = useLogin();
+  const { isSuccess, authenticateUser, errMsg } = useLogin();
 
   // using the useLocalStorage hook to set session in local storage
   const [session, setSession] = useLocalStorage("session", false);
@@ -28,12 +25,12 @@ export const Login = () => {
   }, []);
 
   useEffect(() => {
-    if (isSaved) {
-      // setSession(true); this is used to bypass server authorization
+    //setSesion(true) used to bypass login
+    if (isSuccess) {
       setSession(true);
       navigate("/s/dashboard");
     }
-  }, [isSaved]);
+  }, [isSuccess]);
 
   const handleSubmit = () => {
     // if authentication is successful, isSaved will be set to true
@@ -45,13 +42,6 @@ export const Login = () => {
   };
   return (
     <>
-      <p
-        ref={errRef}
-        className={errMsg ? "showMsg" : "hideMsg"}
-        aria-live="assertive"
-      >
-        {errMsg}
-      </p>
       <h1>LOGIN</h1>
       <Box
         sx={{
@@ -78,6 +68,11 @@ export const Login = () => {
           />
         </div>
       </Box>
+
+      <p aria-live="assertive" style={{ color: "red" }}>
+        {errMsg}
+      </p>
+
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
         <Button variant="contained" onClick={handleSubmit}>
           Submit

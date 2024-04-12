@@ -67,7 +67,7 @@ export const Chat = ({ roomId, socket, username }: Props) => {
 
   const handleEnterKey = (event: { keyCode: number }) => {
     if (event.keyCode === ENTERKEY) {
-      console.log("pressed enter key");
+      // console.log("pressed enter key");
       sendMessage();
     }
   };

@@ -68,19 +68,19 @@ export const Lobby = () => {
     let sk;
 
     // checking environment to conditionally use different server URL
-    // if (import.meta.env.DEV) {
-    //   sk = io.connect("http://localhost:3001");
-    // } else {
-    //   sk = io.connect("https://capstone-gameserver.onrender.com");
-    // }
-
-    if (window.navigator.userAgent.includes("Android")) {
-      console.log("mobile");
-      sk = io.connect("https://a0b1-67-71-196-232.ngrok-free.app");
-    } else {
-      console.log("desktop");
+    if (import.meta.env.DEV) {
       sk = io.connect("http://localhost:3001");
+    } else {
+      sk = io.connect("https://capstone-gameserver.onrender.com");
     }
+
+    // if (window.navigator.userAgent.includes("Android")) {
+    //   console.log("mobile");
+    //   sk = io.connect("https://59eb-142-214-83-244.ngrok-free.app:8000");
+    // } else {
+    //   console.log("desktop");
+    //   sk = io.connect("http://localhost:3001");
+    // }
 
     setSocket(sk);
 
