@@ -13,7 +13,7 @@ import scissor from "../../assets/scissor.svg";
 import Box from "@mui/material/Box";
 import { useReadLocalStorage } from "usehooks-ts";
 
-const Game = () => {
+export const Game = () => {
   const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
@@ -140,5 +140,3 @@ const Game = () => {
     </>
   );
 };
-
-export default Game;
