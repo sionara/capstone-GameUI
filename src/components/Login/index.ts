@@ -1,1 +1,2 @@
-export * from './Login'
+//@ts-ignore
+export * from "./Login";

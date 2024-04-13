@@ -13,7 +13,7 @@ import scissor from "../../assets/scissor.svg";
 import Box from "@mui/material/Box";
 import { useReadLocalStorage } from "usehooks-ts";
 
-export function Game() {
+const Game = () => {
   const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
@@ -139,4 +139,6 @@ export function Game() {
       {socket && <Chat roomId={roomId} socket={socket} username={userName} />}
     </>
   );
-}
+};
+
+export default Game;
