@@ -1,12 +1,8 @@
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useReadLocalStorage } from "usehooks-ts";
-
 export const Landing = () => {
   const navigate = useNavigate();
-  const username = useReadLocalStorage("username");
 
   const redirectToRegister = () => {
     navigate("/register");
@@ -16,11 +12,6 @@ export const Landing = () => {
     navigate("/login");
   };
 
-  // useEffect(() => {
-  //   if (username) {
-  //     navigate("/s/dashboard");
-  //   }
-  // }, [username]);
   return (
     <>
       <h1>Online Rock-Paper Scissor</h1>

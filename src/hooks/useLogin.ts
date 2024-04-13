@@ -8,6 +8,7 @@ interface RegisterProps {
 const useLogin = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errMsg, setErrMsg] = useState("");
+  //@ts-ignore
   const [username, setUserName] = useLocalStorage("username", "");
   let url;
 

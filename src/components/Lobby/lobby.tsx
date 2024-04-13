@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import * as io from "socket.io-client";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { IconButton, Paper, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import "./lobby.css";
 import LoginIcon from "@mui/icons-material/Login";
