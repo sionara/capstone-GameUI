@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Login } from "./components/Login/Login.tsx";
-import { Register } from "./components/Register/Register.tsx";
-import { Dashboard } from "./components/Dashboard/Dashboard.tsx";
-import { Profile } from "./components/Profile/Profile.tsx";
-import { History } from "./components/History/History.tsx";
-import { Game } from "./components/Game/Game.tsx";
-import { Lobby } from "./components/Lobby/Lobby.tsx";
+//@ts-ignore
+import { Login } from "./components/Login";
+import { Register } from "./components/Register";
+import { Dashboard } from "./components/Dashboard";
+import { Profile } from "./components/Profile";
+import { History } from "./components/History";
+import { Game } from "./components/Game";
+import { Lobby } from "./components/Lobby";
 import { SecuredRoute } from "./components/SecuredRoute";
 import { Landing } from "./components/Landing";
 import { UserContext } from "./context/Context.tsx";
