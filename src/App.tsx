@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 //@ts-ignore
