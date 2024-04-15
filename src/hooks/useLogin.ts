@@ -17,7 +17,7 @@ const useLogin = () => {
     if (import.meta.env.DEV) {
       url = "http://localhost:4000/login";
     } else {
-      url = "https://capstone-apiserver.onrender.com";
+      url = "https://capstone-apiserver.onrender.com/login";
     }
     const requestOptions = {
       method: "POST",

@@ -25,7 +25,7 @@ const useRegister = () => {
     if (import.meta.env.DEV) {
       url = "http://localhost:4000/register";
     } else {
-      url = "https://capstone-apiserver.onrender.com";
+      url = "https://capstone-apiserver.onrender.com/register";
     }
 
     const requestOptions = {
