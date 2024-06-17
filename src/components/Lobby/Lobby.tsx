@@ -3,16 +3,18 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
-import * as io from "socket.io-client";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, createSearchParams } from "react-router-dom";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { Paper, Typography } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import "./lobby.css";
 import LoginIcon from "@mui/icons-material/Login";
 import { yellow } from "@mui/material/colors";
 import { ThemeProvider } from "@emotion/react";
+import { SocketContext } from "../../context/Context";
+
+//create room button
+import { CreateRoom } from "./CreateRoom";
 
 const theme = createTheme({
   palette: {
@@ -24,21 +26,9 @@ export const Lobby = () => {
   //global variables should be inside function
   const navigate = useNavigate();
   const [gameRooms, setgameRooms] = useState<string[]>([]);
-  const [socket, setSocket] =
-    useState<io.Socket<DefaultEventsMap, DefaultEventsMap>>();
 
-  const makeid = (length: number) => {
-    let result = "";
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
-    }
-    return result;
-  };
+  // socket client from context
+  const socket = useContext(SocketContext);
 
   const joinRoom = (room: string) => {
     // emits event to create a room with id of room1
@@ -51,12 +41,6 @@ export const Lobby = () => {
     });
   };
 
-  const handleCreateRoom = () => {
-    const roomName = makeid(4);
-    //display some form to fill out to create a room
-    socket!.emit("create_room", roomName);
-  };
-
   const refreshList = () => {
     socket!.emit("get_rooms");
   };
@@ -64,43 +48,35 @@ export const Lobby = () => {
   useEffect(() => {
     // const sk = io.connect(import.meta.env.VITE_GAMESERVER_URL);
 
-    // used different variable to differenciate socket variable in this useEffect scope
-    let sk;
+    // // used different variable to differenciate socket variable in this useEffect scope
+    // let sk;
 
-    // checking environment to conditionally use different server URL
-    if (import.meta.env.DEV) {
-      sk = io.connect("http://localhost:3001");
-    } else {
-      sk = io.connect("https://capstone-gameserver.onrender.com");
-    }
-
-    // if (window.navigator.userAgent.includes("Android")) {
-    //   console.log("mobile");
-    //   sk = io.connect("https://59eb-142-214-83-244.ngrok-free.app:8000");
-    // } else {
-    //   console.log("desktop");
+    // // checking environment to conditionally use different server URL
+    // if (import.meta.env.DEV) {
     //   sk = io.connect("http://localhost:3001");
+    // } else {
+    //   sk = io.connect("https://capstone-gameserver.onrender.com");
     // }
 
-    setSocket(sk);
+    // // if (window.navigator.userAgent.includes("Android")) {
+    // //   console.log("mobile");
+    // //   sk = io.connect("https://59eb-142-214-83-244.ngrok-free.app:8000");
+    // // } else {
+    // //   console.log("desktop");
+    // //   sk = io.connect("http://localhost:3001");
+    // // }
 
-    console.log("Created connection");
+    // setSocket(sk);
+
+    // console.log("Created connection");
 
     //when user creates room. rendered before initial get_rooms call.
-    sk.on("send_rooms", (rooms: any) => {
+    socket.on("send_rooms", (rooms: any) => {
       setgameRooms(rooms);
-      console.log("display rooms ran.");
-      console.log(gameRooms);
-    });
-
-    // when user presses join room
-    sk.on("display_game", () => {
-      // console.log("Redirected to Game page");
-      // navigate('/game');
     });
 
     // first fetch when user enters lobby page. rendered after receiver (send_rooms)
-    sk.emit("get_rooms");
+    socket.emit("get_rooms");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -137,13 +113,7 @@ export const Lobby = () => {
             </Box>
           </Paper>
           <Box className="buttons-container">
-            <Button
-              sx={{ mt: "1em" }}
-              variant="contained"
-              onClick={handleCreateRoom}
-            >
-              Create Room
-            </Button>
+            <CreateRoom sk={{ socket }} />
             <Button variant="contained" onClick={refreshList}>
               Refresh List
             </Button>

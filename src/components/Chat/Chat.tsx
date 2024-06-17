@@ -19,13 +19,16 @@ import SendIcon from "@mui/icons-material/Send";
 import "./Chat.css";
 import * as io from "socket.io-client";
 
+import ChatIcon from "@mui/icons-material/Chat";
+import CloseIcon from "@mui/icons-material/Close";
+
 interface Props {
-  roomId: string;
+  room: string;
   socket: io.Socket<any, any>;
   username: string;
 }
 
-export const Chat = ({ roomId, socket, username }: Props) => {
+export const Chat = ({ room, socket, username }: Props) => {
   const [allMessages, setAllMessages] = useState([]);
   const [message, setMessage] = useState("");
   const userName = username;
@@ -38,6 +41,11 @@ export const Chat = ({ roomId, socket, username }: Props) => {
     </ListItem>
   ));
 
+  const [open, setOpen] = useState(false);
+
+  const handleToggleChatbox = () => {
+    setOpen(!open);
+  };
   //handles receiving message
   useEffect(() => {
     socket.on("receive_message", (data: JSON) => {
@@ -57,7 +65,7 @@ export const Chat = ({ roomId, socket, username }: Props) => {
   const sendMessage = () => {
     if (message) {
       socket!.emit("send_message", {
-        roomId: roomId,
+        room: room,
         user: userName,
         message: message,
       });
@@ -72,40 +80,69 @@ export const Chat = ({ roomId, socket, username }: Props) => {
     }
   };
   return (
-    <Container>
-      <Paper elevation={4}>
-        <Box>
-          <Typography variant="h4" gutterBottom>
-            Text here
-          </Typography>
-          <Divider />
-          <Grid container spacing={4} alignItems="center">
-            <Grid id="chat-window" xs={12} item>
-              <List id="chat-window-messages">{ListMessages}</List>
-            </Grid>
-            <Grid xs={9} item>
-              <FormControl fullWidth>
-                <TextField
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyDown={handleEnterKey}
-                  label="Aa"
-                  variant="outlined"
-                />
-              </FormControl>
-            </Grid>
-            <Grid xs={1} item>
-              <IconButton
-                onClick={sendMessage}
-                aria-label="send"
-                color="primary"
+    <div>
+      {!open ? (
+        <IconButton
+          color="primary"
+          onClick={handleToggleChatbox}
+          sx={{
+            position: "fixed",
+            bottom: 16,
+            right: 16,
+          }}
+        >
+          <ChatIcon />
+        </IconButton>
+      ) : (
+        <Container>
+          <Paper elevation={4}>
+            <Box>
+              {/* toggle chat code */}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "end",
+                  alignItems: "center",
+                }}
               >
-                <SendIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Box>
-      </Paper>
-    </Container>
+                <IconButton onClick={handleToggleChatbox}>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+              {/* main textbox code */}
+              <Typography variant="h4" gutterBottom>
+                Chat
+              </Typography>
+              <Divider />
+              <Grid container spacing={4} alignItems="center">
+                <Grid id="chat-window" xs={12} item>
+                  <List id="chat-window-messages">{ListMessages}</List>
+                </Grid>
+                <Grid xs={9} item>
+                  <FormControl fullWidth>
+                    <TextField
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      onKeyDown={handleEnterKey}
+                      label="Aa"
+                      variant="outlined"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid xs={1} item>
+                  <IconButton
+                    onClick={sendMessage}
+                    aria-label="send"
+                    color="primary"
+                  >
+                    <SendIcon />
+                  </IconButton>
+                </Grid>
+              </Grid>
+            </Box>
+          </Paper>
+        </Container>
+      )}
+    </div>
   );
 };

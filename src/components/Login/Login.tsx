@@ -74,8 +74,12 @@ export const Login = () => {
       </p>
 
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
-        <Button variant="contained" onClick={handleSubmit}>
-          Submit
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          onKeyDown={handleSubmit}
+        >
+          login
         </Button>
         <Button variant="contained" onClick={() => navigate("/register")}>
           Not Registered? Click here to register
