@@ -1,6 +1,5 @@
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { createContext } from "react";
-import { useState } from "react";
 import * as io from "socket.io-client";
 
 // const [userName, setUserName] = useState("");

@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 
 import { SocketContext } from "../../context/Context";
 
-export const CreateRoom = ({ sk }) => {
+export const CreateRoom = () => {
   const [open, setOpen] = useState(false);
   const socket = useContext(SocketContext);
   const handleClickOpen = () => {

@@ -113,7 +113,7 @@ export const Lobby = () => {
             </Box>
           </Paper>
           <Box className="buttons-container">
-            <CreateRoom sk={{ socket }} />
+            <CreateRoom />
             <Button variant="contained" onClick={refreshList}>
               Refresh List
             </Button>

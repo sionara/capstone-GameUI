@@ -33,9 +33,6 @@ export const Game = () => {
 
   const [result, setResult] = useState("");
 
-  const [player1Wins, setPlayer1Wins] = useState(0);
-  const [player2Wins, setPlayer2Wins] = useState(0);
-
   // sends user input to server
   function handleClick(userChoice: string) {
     setIsClicked(true);
@@ -84,10 +81,10 @@ export const Game = () => {
       setIsGameOver(true);
     });
 
-    socket.on("gameUpdate", (data) => {
-      setPlayer1Wins(data.player1_wins);
-      console.log("function ran");
-    });
+    // socket.on("gameUpdate", (data) => {
+    //   setPlayer1Wins(data.player1_wins);
+    //   console.log("function ran");
+    // });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
