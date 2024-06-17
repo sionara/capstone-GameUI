@@ -1,3 +1,9 @@
+# NOTE:
+
+This repo contains the front-end portion of the capstone.
+
+To run the full application on your local device, please clone the [capstone-APIserver](https://github.com/sionara/capstone-APIServer) and [capstone-Gameserver](https://github.com/sionara/capstone-GameServer) repo as well.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
