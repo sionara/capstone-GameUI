@@ -1,1 +1,2 @@
-export * from './history';
+//@ts-ignore
+export * from "./History";

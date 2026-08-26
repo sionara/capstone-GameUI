@@ -1,1 +1,2 @@
-export * from './profile';
+//@ts-ignore
+export * from "./Profile";

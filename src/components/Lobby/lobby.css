@@ -1,0 +1,16 @@
+#rooms-window {
+  margin-top: 1em;
+  height: 20rem;
+  border: 1px solid black;
+}
+
+#rooms-window-list {
+  height: 18rem;
+  overflow: auto;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}

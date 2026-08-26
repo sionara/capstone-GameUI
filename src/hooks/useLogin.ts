@@ -1,19 +1,29 @@
 import { useState } from "react";
-
+import { useLocalStorage } from "usehooks-ts";
 interface RegisterProps {
   email: string;
   password: string;
 }
 
 const useLogin = () => {
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
+  //@ts-ignore
+  const [username, setUserName] = useLocalStorage("username", "");
+  let url;
 
   const authenticateUser = ({ email, password }: RegisterProps) => {
     // this could be path to my database, or external API etc
-    const url = "http://localhost:4000/login";
+    if (import.meta.env.DEV) {
+      url = "http://localhost:4000/login";
+    } else {
+      url = "https://capstone-api-server.vercel.app/login";
+    }
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ email, password }),
     };
     try {
@@ -23,15 +33,19 @@ const useLogin = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          setIsSaved(true);
+          if (data.msg === "success") {
+            setIsSuccess(true);
+            setUserName(data.name);
+          } else {
+            setErrMsg(data.msg);
+          }
         });
-      setIsSaved(true);
     } catch (err) {
       console.log(err);
     }
   };
 
-  return { isSaved, authenticateUser };
+  return { isSuccess, authenticateUser, errMsg };
 };
 
 export default useLogin;

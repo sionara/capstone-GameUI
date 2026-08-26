@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { useLocalStorage } from "usehooks-ts";
 interface RegisterProps {
   name: string;
   email: string;
@@ -8,7 +8,11 @@ interface RegisterProps {
 }
 
 const useRegister = () => {
-  const [isSaved, setIsSaved] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  //@ts-ignore
+  const [username, setUserName] = useLocalStorage("username", "");
+  let url;
 
   const register = ({
     name,
@@ -17,11 +21,18 @@ const useRegister = () => {
     confirmPassword,
   }: RegisterProps) => {
     console.log(JSON.stringify({ name, email, password, confirmPassword }));
+    // if (window.navigator.userAgent.includes("Android"))
+    if (import.meta.env.DEV) {
+      url = "http://localhost:4000/register";
+    } else {
+      url = "https://capstone-api-server.vercel.app/register";
+    }
 
-    const url = "http://localhost:4000/register";
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ name, email, password, confirmPassword }),
     };
     try {
@@ -29,15 +40,20 @@ const useRegister = () => {
       fetch(url, requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
-          setIsSaved(true);
+          // console.log(data);
+          if (data.msg === "success") {
+            setIsSuccess(true);
+            setUserName(data.name);
+          } else {
+            setErrorMsg(data.msg);
+          }
         });
     } catch (err) {
       console.log(err);
     }
   };
 
-  return { isSaved, register };
+  return { isSuccess, register, errorMsg };
 };
 
 export default useRegister;

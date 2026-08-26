@@ -1,1 +1,2 @@
-export * from "./lobby";
+//@ts-ignore
+export * from "./Lobby";

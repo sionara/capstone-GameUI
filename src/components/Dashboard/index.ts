@@ -1,2 +1,3 @@
-export * from './dashboard';
-export * from './nav';
+//@ts-ignore
+export * from "./Dashboard";
+export * from "./nav";

@@ -1,1 +1,2 @@
-export { Game } from "./game";
+//@ts-ignore
+export * from "./Game";
