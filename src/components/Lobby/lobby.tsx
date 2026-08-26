@@ -1,13 +1,13 @@
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
-import * as io from "socket.io-client";
-import { useNavigate, createSearchParams } from "react-router-dom";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { Paper } from "@mui/material";
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Button from '@mui/material/Button';
+import { useEffect, useState } from 'react';
+import * as io from 'socket.io-client';
+import { useNavigate, createSearchParams } from 'react-router-dom';
+import { DefaultEventsMap } from '@socket.io/component-emitter';
+import { Paper } from '@mui/material';
 
 export const Lobby = () => {
   //global variables should be inside function
@@ -17,9 +17,9 @@ export const Lobby = () => {
     useState<io.Socket<DefaultEventsMap, DefaultEventsMap>>();
 
   const makeid = (length: number) => {
-    let result = "";
+    let result = '';
     const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
     let counter = 0;
     while (counter < length) {
@@ -33,7 +33,7 @@ export const Lobby = () => {
     // emits event to create a room with id of room1
     // socket!.emit("join_game", room);
     navigate({
-      pathname: "/s/game",
+      pathname: '/s/game',
       search: createSearchParams({
         room: room,
       }).toString(),
@@ -43,11 +43,11 @@ export const Lobby = () => {
   const handleCreateRoom = () => {
     const roomName = makeid(4);
     //display some form to fill out to create a room
-    socket!.emit("create_room", roomName);
+    socket!.emit('create_room', roomName);
   };
 
   const refreshList = () => {
-    socket!.emit("get_rooms");
+    socket!.emit('get_rooms');
   };
   // register functions to handle responses from server here
   useEffect(() => {
@@ -55,28 +55,28 @@ export const Lobby = () => {
 
     setSocket(_socket);
 
-    console.log("Created connection");
+    console.log('Created connection');
 
     //when user creates room. rendered before initial get_rooms call.
-    _socket.on("send_rooms", (rooms: any) => {
+    _socket.on('send_rooms', (rooms: any) => {
       setgameRooms(rooms);
-      console.log("display rooms ran.");
+      console.log('display rooms ran.');
       console.log(gameRooms);
     });
 
     // when user presses join room
-    _socket.on("display_game", () => {
+    _socket.on('display_game', () => {
       // console.log("Redirected to Game page");
       // navigate('/game');
     });
 
     // first fetch when user enters lobby page. rendered after receiver (send_rooms)
-    _socket.emit("get_rooms");
+    _socket.emit('get_rooms');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const returnToDash = () => {
-    navigate("/s/dashboard");
+    navigate('/s/dashboard');
   };
 
   return (
@@ -91,6 +91,7 @@ export const Lobby = () => {
               {gameRooms.map((room) => (
                 <ListItem key={room}>
                   {room}
+                  Available/Full This will be indicator of rooms
                   <Button onClick={() => joinRoom(room)}>Join Room</Button>
                 </ListItem>
               ))}
