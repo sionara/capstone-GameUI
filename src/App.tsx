@@ -3,6 +3,7 @@ import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { Dashboard } from "./components/Dashboard";
 import { Profile } from "./components/Profile";
+import { EditProfile } from "./components/EditProfile";
 import { History } from "./components/History";
 import { Game } from "./components/Game";
 import { Lobby } from "./components/Lobby";
@@ -38,6 +39,10 @@ const router = createBrowserRouter(
         {
           path: "profile",
           element: <Profile />,
+        },
+        {
+          path: "edit-profile",
+          element: <EditProfile />,
         },
         {
           path: "history",

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { API_BASE_URL } from "../utils/apiBase";
+
 interface RegisterProps {
   name: string;
   email: string;
@@ -10,9 +12,9 @@ interface RegisterProps {
 const useRegister = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  //@ts-ignore
-  const [username, setUserName] = useLocalStorage("username", "");
-  let url;
+  const [, setUserName] = useLocalStorage("username", "");
+  const [, setUserId] = useLocalStorage("userId", "");
+  const [, setUserEmail] = useLocalStorage("userEmail", "");
 
   const register = ({
     name,
@@ -20,13 +22,7 @@ const useRegister = () => {
     password,
     confirmPassword,
   }: RegisterProps) => {
-    console.log(JSON.stringify({ name, email, password, confirmPassword }));
-    // if (window.navigator.userAgent.includes("Android"))
-    if (import.meta.env.DEV) {
-      url = "http://localhost:4000/register";
-    } else {
-      url = "https://capstone-api-server.vercel.app/register";
-    }
+    const url = `${API_BASE_URL}/register`;
 
     const requestOptions = {
       method: "POST",
@@ -44,6 +40,8 @@ const useRegister = () => {
           if (data.msg === "success") {
             setIsSuccess(true);
             setUserName(data.name);
+            setUserId(data.id);
+            setUserEmail(data.email);
           } else {
             setErrorMsg(data.msg);
           }

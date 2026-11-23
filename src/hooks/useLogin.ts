@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
+import { API_BASE_URL } from "../utils/apiBase";
+
 interface RegisterProps {
   email: string;
   password: string;
@@ -8,17 +10,12 @@ interface RegisterProps {
 const useLogin = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errMsg, setErrMsg] = useState("");
-  //@ts-ignore
-  const [username, setUserName] = useLocalStorage("username", "");
-  let url;
+  const [, setUserName] = useLocalStorage("username", "");
+  const [, setUserId] = useLocalStorage("userId", "");
+  const [, setUserEmail] = useLocalStorage("userEmail", "");
 
   const authenticateUser = ({ email, password }: RegisterProps) => {
-    // this could be path to my database, or external API etc
-    if (import.meta.env.DEV) {
-      url = "http://localhost:4000/login";
-    } else {
-      url = "https://capstone-api-server.vercel.app/login";
-    }
+    const url = `${API_BASE_URL}/login`;
     const requestOptions = {
       method: "POST",
       headers: {
@@ -36,6 +33,8 @@ const useLogin = () => {
           if (data.msg === "success") {
             setIsSuccess(true);
             setUserName(data.name);
+            setUserId(data.id);
+            setUserEmail(data.email);
           } else {
             setErrMsg(data.msg);
           }
