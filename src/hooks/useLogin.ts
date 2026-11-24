@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { API_BASE_URL } from "../utils/apiBase";
+import { TOKEN_KEY } from "../utils/auth";
 
 interface RegisterProps {
   email: string;
@@ -13,6 +14,8 @@ const useLogin = () => {
   const [, setUserName] = useLocalStorage("username", "");
   const [, setUserId] = useLocalStorage("userId", "");
   const [, setUserEmail] = useLocalStorage("userEmail", "");
+  // Login token: sent to APIServer and GameServer to prove who this user is.
+  const [, setToken] = useLocalStorage(TOKEN_KEY, "");
 
   const authenticateUser = ({ email, password }: RegisterProps) => {
     const url = `${API_BASE_URL}/login`;
@@ -35,6 +38,7 @@ const useLogin = () => {
             setUserName(data.name);
             setUserId(data.id);
             setUserEmail(data.email);
+            setToken(data.token);
           } else {
             setErrMsg(data.msg);
           }

@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import useLogin from '../../hooks/useLogin';
 import { useLocalStorage } from 'usehooks-ts';
+import { SocketContext } from '../../context/Context';
+import { clearAuth } from '../../utils/auth';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,12 +18,18 @@ export const Login = () => {
 
   // using the useLocalStorage hook to set session in local storage
   const [session, setSession] = useLocalStorage('session', false);
+  const socket = useContext(SocketContext);
   // checking to see if session value is true when user navigates to login
 
+  // Arriving here is how logout works (HeaderNav's Logout links to /login), so
+  // drop the token and close the game socket - the next login reconnects it
+  // with the new user's token.
   useEffect(() => {
     if (session) {
       setSession(false);
     }
+    clearAuth();
+    socket.disconnect();
   }, []);
 
   useEffect(() => {

@@ -11,7 +11,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { useReadLocalStorage } from "usehooks-ts";
 
 import { SocketContext } from "../../context/Context";
 import { getClientId } from "../../utils/clientId";
@@ -28,8 +27,6 @@ export const CreateRoom = () => {
   const [error, setError] = useState("");
   const socket = useContext(SocketContext);
   const navigate = useNavigate();
-  const username = useReadLocalStorage("username") as string;
-  const userId = useReadLocalStorage("userId") as string;
 
   const handleClickOpen = () => {
     setError("");
@@ -43,7 +40,7 @@ export const CreateRoom = () => {
   const handleCreate = () => {
     socket.emit(
       "create_room",
-      { username, userId, clientId: getClientId(), bestOf: Number(bestOf) },
+      { clientId: getClientId(), bestOf: Number(bestOf) },
       (response: CreateRoomResponse) => {
         if (response.ok && response.room) {
           setOpen(false);

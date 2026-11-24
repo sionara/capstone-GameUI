@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "usehooks-ts";
 import useProfile from "../../hooks/useProfile";
 import { API_BASE_URL } from "../../utils/apiBase";
+import { authFetch } from "../../utils/auth";
 
 // ~1.5MB raw, which lands under the server's ~2MB base64-encoded cap once
 // FileReader inflates it (base64 adds roughly 33%).
@@ -85,14 +86,15 @@ export const EditProfile = () => {
       return;
     }
 
-    const payload: Record<string, unknown> = { id: profile.id };
+    // No id in the payload: the server updates whoever the token belongs to.
+    const payload: Record<string, unknown> = {};
     if (emailChanged) payload.email = email;
     if (passwordChanged) payload.password = newPassword;
     if (emailChanged || passwordChanged) payload.currentPassword = currentPassword;
     if (avatar !== undefined) payload.avatar = avatar;
 
     setSubmitting(true);
-    fetch(`${API_BASE_URL}/profile/update`, {
+    authFetch(`${API_BASE_URL}/profile/update`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

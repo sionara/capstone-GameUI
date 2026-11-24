@@ -59,7 +59,6 @@ interface GameOverPayload {
 export const Game = () => {
   const navigate = useNavigate();
   const userName = useReadLocalStorage("username") as string;
-  const userId = useReadLocalStorage("userId") as string;
   const clientId = getClientId();
 
   const [searchparams] = useSearchParams();
@@ -109,7 +108,7 @@ export const Game = () => {
 
     socket.emit(
       "join_room",
-      { code, username: userName, userId, clientId },
+      { code, clientId },
       (response: JoinRoomResponse) => {
         if (response.ok && response.room) {
           setRoom(response.room);
@@ -159,9 +158,14 @@ export const Game = () => {
       socket.off("room_closed", onRoomClosed);
 
       // Navigating away in-app (e.g. clicking a nav link) doesn't close the
-      // socket - it's the same long-lived connection. If the match is still
-      // live, leaving this page counts as leaving the game.
-      if (code && roomRef.current && roomRef.current.status === "playing") {
+      // socket - it's the same long-lived connection, so the server never
+      // sees a disconnect. Leaving this page therefore has to count as
+      // leaving the room explicitly:
+      //  - "waiting": only the host is in it, and the server closes the room
+      //    (host_left), so it disappears from the lobby.
+      //  - "playing": the leaver forfeits.
+      const status = roomRef.current?.status;
+      if (code && (status === "waiting" || status === "playing")) {
         socket.emit("leave_room", { code, clientId });
       }
     };

@@ -12,7 +12,6 @@ import "./lobby.css";
 import LoginIcon from "@mui/icons-material/Login";
 import { yellow } from "@mui/material/colors";
 import { ThemeProvider } from "@emotion/react";
-import { useReadLocalStorage } from "usehooks-ts";
 import { SocketContext } from "../../context/Context";
 import { getClientId } from "../../utils/clientId";
 
@@ -45,14 +44,12 @@ export const Lobby = () => {
   const [error, setError] = useState("");
 
   const socket = useContext(SocketContext);
-  const username = useReadLocalStorage("username") as string;
-  const userId = useReadLocalStorage("userId") as string;
 
   const joinRoom = (code: string) => {
     setError("");
     socket.emit(
       "join_room",
-      { code, username, userId, clientId: getClientId() },
+      { code, clientId: getClientId() },
       (response: JoinRoomResponse) => {
         if (response.ok && response.room) {
           navigate({

@@ -6,6 +6,7 @@ import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import { useReadLocalStorage } from "usehooks-ts";
 import { API_BASE_URL } from "../../utils/apiBase";
+import { authFetch } from "../../utils/auth";
 
 interface GameRecord {
   id: number;
@@ -29,7 +30,8 @@ export const History = () => {
       setError("Not logged in");
       return;
     }
-    fetch(`${API_BASE_URL}/history?id=${userId}&limit=10`)
+    // The server reads the user id from the token, not from the URL.
+    authFetch(`${API_BASE_URL}/history?limit=10`)
       .then((response) => response.json())
       .then((data) => {
         if (data.msg === "success") {

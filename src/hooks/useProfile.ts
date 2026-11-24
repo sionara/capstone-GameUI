@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useReadLocalStorage } from "usehooks-ts";
 import { API_BASE_URL } from "../utils/apiBase";
+import { authFetch } from "../utils/auth";
 
 export interface Profile {
   id: number;
@@ -24,7 +25,8 @@ const useProfile = () => {
       return;
     }
     setLoading(true);
-    fetch(`${API_BASE_URL}/profile?id=${userId}`)
+    // The server reads the user id from the token, not from the URL.
+    authFetch(`${API_BASE_URL}/profile`)
       .then((response) => response.json())
       .then((data) => {
         if (data.msg === "success") {
